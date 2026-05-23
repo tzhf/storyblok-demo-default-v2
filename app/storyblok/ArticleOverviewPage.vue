@@ -1,5 +1,8 @@
-<script setup>
-defineProps({ blok: Object })
+<script setup lang="ts">
+import type { ArticleOverviewPage, ArticlePage, Category } from '#storyblok'
+import type { ISbStoryData } from '@storyblok/js'
+
+defineProps<{ blok: ArticleOverviewPage }>()
 
 const { slug } = useRoute().params
 let language = 'default'
@@ -12,14 +15,12 @@ const searchTerm = ref('')
 const checkedCategory = ref('')
 
 const filterQuery = computed(() => {
-  const query = {}
-
+  const query: Record<string, unknown> = {}
   if (checkedCategory.value) {
     query.categories = {
       in: checkedCategory.value,
     }
   }
-
   return query
 })
 
@@ -27,11 +28,11 @@ const storyblokApi = useStoryblokApi()
 
 const loading = ref(true)
 
-const articles = ref(null)
+const articles = ref<ISbStoryData<ArticlePage>[]>([])
 
 const fetchArticles = async () => {
   loading.value = true
-  articles.value = null
+  articles.value = []
   const { data } = await storyblokApi.get('cdn/stories/', {
     version: getVersion(),
     starts_with: 'articles',
@@ -41,7 +42,7 @@ const fetchArticles = async () => {
     filter_query: filterQuery.value,
     resolve_relations: 'article-page.categories',
   })
-  articles.value = data.stories.filter((story) => story.is_startpage !== true)
+  articles.value = data.stories.filter((story: ISbStoryData<ArticlePage>) => story.is_startpage !== true)
   loading.value = false
 }
 
@@ -54,7 +55,7 @@ const getCategories = async () => {
     version: getVersion(),
     starts_with: 'categories',
   })
-  categories.value = data.stories.filter((story) => story.is_startpage !== true)
+  categories.value = data.stories.filter((story: ISbStoryData<Category>) => story.is_startpage !== true)
 }
 
 getCategories()
@@ -92,7 +93,7 @@ const gridClasses = computed(() => getGridClasses())
             placeholder="Search for anything"
             class="border-dark rounded-lg border-2 px-12 py-4 text-xl focus:outline-none"
             @keypress.enter="fetchArticles()"
-          >
+          />
         </div>
         <div class="mb-12 flex flex-col rounded-lg border border-gray-300 p-1 lg:flex-row">
           <button
@@ -118,7 +119,7 @@ const gridClasses = computed(() => getGridClasses())
               :name="category.uuid"
               :value="category.uuid"
               class="sr-only"
-            >
+            />
             <span>{{ category.name }}</span>
           </label>
         </div>

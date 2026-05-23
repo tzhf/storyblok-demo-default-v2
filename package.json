@@ -8,12 +8,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:debug": "eslint . --debug",
-    "storyblok:pull": "storyblok components pull --space <YOUR_SPACE_ID>",
-    "storyblok:push": "storyblok components push --space <YOUR_SPACE_ID>",
-    "storyblok:generate-types": "storyblok types generate --space <YOUR_SPACE_ID>"
+    "storyblok:pull": "node scripts/storyblok.mjs pull",
+    "storyblok:generate-types": "node scripts/storyblok.mjs generate-types",
+    "storyblok:push": "node scripts/storyblok.mjs push"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
@@ -24,6 +25,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "@vueuse/nuxt": "^14.2.1",
     "clone-deep": "^4.0.1",
+    "dotenv": "^17.4.2",
     "eslint": "^9.31.0",
     "eslint-plugin-tailwindcss": "^4.0.0-beta.0",
     "husky": "^9.1.7",

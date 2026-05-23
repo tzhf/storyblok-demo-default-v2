@@ -1,10 +1,7 @@
-<script setup>
-defineProps({
-  logo: Object,
-  nav: Object,
-  buttons: Object,
-  light: Boolean,
-})
+<script setup lang="ts">
+import type { SiteConfig } from '#storyblok'
+
+defineProps<{ siteConfig: SiteConfig }>()
 
 defineEmits(['toggleMobileNav'])
 
@@ -24,39 +21,43 @@ onMounted(() => {
 <template>
   <header
     class="fixed left-0 top-0 z-99 h-32 w-full border-b border-primary-dark transition-all duration-300"
-    :class="[headerScrollClass, { 'bg-primary-dark': !light }]"
+    :class="[headerScrollClass, { 'bg-primary-dark': !siteConfig.header_light }]"
   >
     <div
       class="mx-auto flex size-full max-w-screen-2xl items-center justify-between px-4 lg:justify-start lg:px-8"
     >
       <NuxtLink
-        v-if="logo?.filename"
+        v-if="siteConfig.header_logo?.filename"
         to="/"
         class="focus-ring flex shrink-0"
         aria-label="Return to homepage"
       >
         <img
-          :src="logo.filename"
-          :alt="logo.alt"
+          :src="siteConfig.header_logo.filename"
+          :alt="siteConfig.header_logo.alt || 'Logo'"
           class="pointer-events-none max-h-20 w-full max-w-45 origin-left object-contain transition-transform duration-700 xl:max-w-62.5"
-        >
+        />
       </NuxtLink>
       <nav class="main-nav invisible ml-auto mr-12 hidden h-full lg:visible lg:block">
         <ul class="h-full">
-          <li v-for="item in nav" :key="item._uid" class="h-full">
-            <NavItem class="nav-item" :class="light ? 'text-primary-dark' : 'text-white'" :item="item" />
+          <li v-for="item in siteConfig.header_nav" :key="item._uid" class="h-full">
+            <NavItem
+              class="nav-item"
+              :class="siteConfig.header_light ? 'text-primary-dark' : 'text-white'"
+              :item="item"
+            />
           </li>
         </ul>
       </nav>
       <nav class="invisible ml-auto hidden md:visible md:mr-8 md:block lg:mx-0">
         <ul class="flex items-center space-x-4 xl:space-x-8">
-          <li v-for="button in buttons" :key="button._uid">
+          <li v-for="button in siteConfig.header_buttons" :key="button._uid">
             <Button :button="button" />
           </li>
         </ul>
       </nav>
       <MobileNavToggle
-        :color="light ? 'bg-primary-dark' : 'bg-primary-background'"
+        :color="siteConfig.header_light ? 'bg-primary-dark' : 'bg-primary-background'"
         @click="$emit('toggleMobileNav')"
       />
     </div>

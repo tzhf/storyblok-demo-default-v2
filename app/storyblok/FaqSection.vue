@@ -1,17 +1,18 @@
-<script setup>
-defineProps({ blok: Object, index: Number })
+<script setup lang="ts">
+import type { FaqSection } from '#storyblok'
+defineProps<{ blok: FaqSection; index: number }>()
 </script>
 
 <template>
   <section v-editable="blok" class="page-section faq-section relative bg-primary-background">
     <div class="container relative z-10 grid gap-10 xl:grid-cols-2">
       <div>
-        <Headline v-if="blok.headline" :index="index" size="small" :headline="blok.headline" />
+        <Headline v-if="blok.headline" :headline="blok.headline" size="small" :index="index" />
         <Lead v-if="blok.lead">
           {{ blok.lead }}
         </Lead>
       </div>
-      <ul v-if="blok.faq_entries.length" class="">
+      <ul v-if="blok.faq_entries?.length" class="">
         <li
           v-for="entry in blok.faq_entries"
           :key="entry._uid"

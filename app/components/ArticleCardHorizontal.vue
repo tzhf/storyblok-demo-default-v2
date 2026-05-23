@@ -1,5 +1,7 @@
-<script setup>
-const props = defineProps({ article: Object, slug: String })
+<script setup lang="ts">
+import type { ArticlePage } from '#storyblok'
+
+const props = defineProps<{ article: ArticlePage; slug: string }>()
 
 const optimizedImage = computed(() => getOptimizedImage(props.article?.image, 400, 400))
 </script>
@@ -12,21 +14,22 @@ const optimizedImage = computed(() => getOptimizedImage(props.article?.image, 40
     <img
       v-if="optimizedImage"
       :src="optimizedImage"
-      :alt="article.image && article.image.alt"
+      :alt="article.image?.alt ?? ''"
       width="200"
       height="200"
       class="aspect-square size-50 rounded-xl md:order-1"
-    >
+    />
     <div>
       <CategoriesList
-        v-if="article.categories.length"
+        v-if="article.categories?.length"
         :categories="article.categories"
         class="mb-4 flex gap-4 lg:flex-col xl:flex-row"
       />
       <h3 v-if="article.headline" class="font-display text-2xl font-black">
         {{ article.headline }}
       </h3>
-      <ReadMoreLink :href="`/${slug}`" :title="article.headline" />
+
+      <ReadMoreLink :href="`/${slug}`" :title="article.headline ?? 'Read more'" />
     </div>
   </div>
 </template>

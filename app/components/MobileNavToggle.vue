@@ -1,5 +1,5 @@
-<script setup>
-defineProps({ color: String })
+<script setup lang="ts">
+defineProps<{ color: string }>()
 
 const active = ref(false)
 

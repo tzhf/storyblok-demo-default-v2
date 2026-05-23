@@ -1,15 +1,14 @@
-<script setup>
-defineProps({ blok: Object, index: Number });
-const componentExists = component =>
-  typeof resolveComponent(component) !== 'string';
+<script setup lang="ts">
+import type { SbBlokData } from '@storyblok/js'
+
+defineProps<{ blok: SbBlokData; index: number }>()
+
+const componentExists = (component: string | undefined): component is string =>
+  !!component && typeof resolveComponent(component) !== 'string'
 </script>
 
 <template>
-  <StoryblokComponent
-    v-if="componentExists(blok.component)"
-    :blok="blok"
-    :index="index"
-  />
+  <StoryblokComponent v-if="componentExists(blok.component)" :blok="blok as SbBlokData" :index="index" />
   <div v-else class="container flex justify-center">
     <div
       class="my-16 inline-flex items-center justify-center space-x-2 rounded-lg bg-primary-background p-8 text-xl text-primary-dark"

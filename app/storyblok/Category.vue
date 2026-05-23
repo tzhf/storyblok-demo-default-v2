@@ -1,15 +1,13 @@
-<script setup>
-const props = defineProps({ blok: Object, uuid: String });
+<script setup lang="ts">
+import type { Category } from '#storyblok'
 
-const { slug } = useRoute().params;
-let language = 'default';
+const props = defineProps<{ blok: Category; uuid: string }>()
 
-if (slug) {
-  language = await getLanguage(slug);
-}
+const { slug } = useRoute().params
+const language = await getLanguage(slug ?? [])
 
-const articles = ref(null);
-const storyblokApi = useStoryblokApi();
+const articles = ref(null)
+const storyblokApi = useStoryblokApi()
 const { data } = await storyblokApi.get(`cdn/stories/`, {
   version: getVersion(),
   starts_with: 'articles',
@@ -21,23 +19,19 @@ const { data } = await storyblokApi.get(`cdn/stories/`, {
   language,
   fallback_lang: 'default',
   resolve_relations: 'article-page.categories',
-});
+})
 
-articles.value = data.stories;
+articles.value = data.stories
 
-const gridClasses = computed(() => getGridClasses());
+const gridClasses = computed(() => getGridClasses())
 </script>
 
 <template>
   <main v-editable="blok" class="container py-12 md:py-16">
-    <H1Headline
-      v-if="blok.headline"
-    >
+    <H1Headline v-if="blok.headline">
       {{ blok.headline }}
     </H1Headline>
-    <div
-      :class="gridClasses"
-    >
+    <div :class="gridClasses">
       <ArticleCardVertical
         v-for="article in articles"
         :key="article.uuid"

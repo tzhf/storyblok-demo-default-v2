@@ -7,5 +7,15 @@ export default withNuxt({
     'no-console': 'off',
     'tailwindcss/no-custom-classname': 'off',
     'vue/multi-word-component-names': 'off',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'any',
+          normal: 'always',
+          component: 'always',
+        },
+      },
+    ],
   },
 })

@@ -1,5 +1,7 @@
-<script setup>
-defineProps({ blok: Object })
+<script setup lang="ts">
+import type { RichtextYoutube } from '#storyblok'
+
+defineProps<{ blok: RichtextYoutube }>()
 </script>
 
 <template>

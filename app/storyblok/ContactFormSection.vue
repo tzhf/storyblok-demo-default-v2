@@ -1,5 +1,7 @@
-<script setup>
-const props = defineProps({ blok: Object, index: Number })
+<script setup lang="ts">
+import type { ContactFormSection } from '#storyblok'
+
+const props = defineProps<{ blok: ContactFormSection; index: number }>()
 
 const optimizedImage = computed(() => getOptimizedImage(props.blok?.image, 1200))
 
@@ -15,11 +17,9 @@ const submit = () => {
 
 <template>
   <section v-editable="blok" class="page-section contact-form-section relative">
-    <div
-      class="container relative z-10 grid items-center gap-12 lg:min-h-150 lg:grid-cols-2 lg:gap-32"
-    >
+    <div class="container relative z-10 grid items-center gap-12 lg:min-h-150 lg:grid-cols-2 lg:gap-32">
       <div class="relative">
-        <Headline v-if="blok.headline" :index="index" :headline="blok.headline" />
+        <Headline v-if="blok.headline" :headline="blok.headline" :index="index" />
         <div v-if="blok.text" class="prose prose-lg mb-6">
           <StoryblokRichText :doc="blok.text" />
         </div>
@@ -34,7 +34,7 @@ const submit = () => {
                 placeholder="Your name"
                 class="w-full rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition-all focus:outline-none"
                 required
-              >
+              />
             </div>
             <div>
               <label for="email" class="mb-2 block font-semibold">Email</label>
@@ -45,7 +45,7 @@ const submit = () => {
                 placeholder="enjoy@storyblok.com"
                 class="w-full rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition-all focus:outline-none"
                 required
-              >
+              />
             </div>
             <div class="col-span-2">
               <label for="message" class="mb-2 block font-semibold">Message</label>
@@ -61,7 +61,7 @@ const submit = () => {
               <label for="options" class="mb-2 block font-semibold">How can we help you?</label>
               <div class="flex flex-wrap gap-4">
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option1" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option1" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -69,7 +69,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option2" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option2" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -77,7 +77,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option3" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option3" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -85,7 +85,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option1" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option1" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -93,7 +93,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option2" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option2" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -101,7 +101,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option3" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option3" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -109,7 +109,7 @@ const submit = () => {
                   </div>
                 </label>
                 <label class="cursor-pointer">
-                  <input type="checkbox" name="options" value="option3" class="peer hidden" >
+                  <input type="checkbox" name="options" value="option3" class="peer hidden" />
                   <div
                     class="rounded-lg border border-gray-300 px-6 py-4 text-primary-dark transition hover:border-black peer-checked:border-black peer-checked:bg-black peer-checked:text-white"
                   >
@@ -120,7 +120,7 @@ const submit = () => {
             </div>
           </div>
           <Button
-            v-if="blok.button.length && blok.button[0]"
+            v-if="blok.button?.length && blok.button[0]"
             :button="blok.button[0]"
             @click.prevent="submit"
           />
@@ -148,8 +148,8 @@ const submit = () => {
         v-if="optimizedImage"
         class="size-full object-cover"
         :src="optimizedImage"
-        :alt="blok.image.alt"
-      >
+        :alt="blok.image?.alt || ''"
+      />
     </div>
     <div class="overflow-none relative mt-12 flex min-h-150 items-end py-12 lg:invisible lg:hidden">
       <div class="container relative z-10 text-white">
@@ -166,8 +166,8 @@ const submit = () => {
           v-if="optimizedImage"
           class="size-full object-cover"
           :src="optimizedImage"
-          :alt="blok.image.alt"
-        >
+          :alt="blok.image?.alt || ''"
+        />
       </div>
     </div>
   </section>

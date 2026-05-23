@@ -1,21 +1,22 @@
-<script setup>
-const props = defineProps({ item: Object, reducedFontWeight: Boolean });
+<script setup lang="ts">
+import type { NavItem } from '#storyblok'
+
+const props = defineProps<{
+  item: NavItem
+  reducedFontWeight?: boolean
+}>()
 
 const url = computed(() => {
-  if (props.item.link.url !== '') {
-    return '';
+  const link = props.item.link
+
+  if (link.linktype === 'story') {
+    return `/${(link.story as { full_slug?: string })?.full_slug ?? ''}`
   }
-  switch (props.item.link.linktype) {
-    case 'story':
-      return `/${props.item.link.story?.full_slug}`;
-    case 'email':
-      return `mailto:${props.item.link.email}`;
-    case 'url':
-    case 'asset':
-    default:
-      return props.item.link.url;
+  if (link.linktype === 'email') {
+    return `mailto:${link.email}`
   }
-});
+  return link.url ?? ''
+})
 </script>
 
 <template>

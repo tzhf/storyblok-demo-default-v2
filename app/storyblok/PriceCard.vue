@@ -1,5 +1,7 @@
-<script setup>
-defineProps({ blok: Object })
+<script setup lang="ts">
+import type { PriceCard } from '#storyblok'
+
+defineProps<{ blok: PriceCard }>()
 </script>
 
 <template>
@@ -21,7 +23,7 @@ defineProps({ blok: Object })
     <span v-if="blok.price" class="mt-4 text-4xl font-black"
       >${{ blok.price }}<span class="text-2xl font-medium">/month</span></span
     >
-    <div v-if="blok.button.length" class="my-6">
+    <div v-if="blok.button?.length" class="my-6">
       <Button v-for="button in blok.button" :key="button._uid" :button="button" />
     </div>
     <div v-if="blok.text_2" class="prose">
