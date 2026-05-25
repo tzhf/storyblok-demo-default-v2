@@ -8,30 +8,47 @@ const cssVariables = computed(() => {
     const content = siteConfig.value.content
 
     if (content.use_custom_fonts) {
-      if (content.custom_font_display) theme['--font-family-display'] = content.custom_font_display
-      if (content.custom_font_body) theme['--font-family-body'] = content.custom_font_body
+      if (content.custom_font_display)
+        theme['--font-family-display'] = content.custom_font_display as string
+      if (content.custom_font_body) theme['--font-family-body'] = content.custom_font_body as string
     }
 
     if (content.use_custom_colors) {
-      theme['--color-primary-highlight'] = content.primary_highlight_color?.color
-      theme['--color-highlight-1'] = content.highlight_1_color?.color
-      theme['--color-highlight-2'] = content.highlight_2_color?.color
-      theme['--color-highlight-3'] = content.highlight_3_color?.color
-      theme['--color-primary-background'] = content.primary_background_color?.color
-      theme['--color-background-1'] = content.background_1_color?.color
-      theme['--color-background-2'] = content.background_2_color?.color
-      theme['--color-background-3'] = content.background_3_color?.color
-      theme['--color-background-4'] = content.background_4_color?.color
-      theme['--color-background-5'] = content.background_5_color?.color
-      theme['--color-background-6'] = content.background_6_color?.color
-      theme['--color-background-7'] = content.background_7_color?.color
-      theme['--color-background-8'] = content.background_8_color?.color
-      theme['--color-background-9'] = content.background_9_color?.color
-      theme['--color-background-10'] = content.background_10_color?.color
-      theme['--color-primary-dark'] = content.primary_dark_color?.color
+      if (content.primary_highlight_color?.color)
+        theme['--color-primary-highlight'] = content.primary_highlight_color.color
+      if (content.highlight_1_color?.color)
+        theme['--color-highlight-1'] = content.highlight_1_color.color
+      if (content.highlight_2_color?.color)
+        theme['--color-highlight-2'] = content.highlight_2_color.color
+      if (content.highlight_3_color?.color)
+        theme['--color-highlight-3'] = content.highlight_3_color.color
+      if (content.primary_background_color?.color)
+        theme['--color-primary-background'] = content.primary_background_color.color
+      if (content.background_1_color?.color)
+        theme['--color-background-1'] = content.background_1_color.color
+      if (content.background_2_color?.color)
+        theme['--color-background-2'] = content.background_2_color.color
+      if (content.background_3_color?.color)
+        theme['--color-background-3'] = content.background_3_color.color
+      if (content.background_4_color?.color)
+        theme['--color-background-4'] = content.background_4_color.color
+      if (content.background_5_color?.color)
+        theme['--color-background-5'] = content.background_5_color.color
+      if (content.background_6_color?.color)
+        theme['--color-background-6'] = content.background_6_color.color
+      if (content.background_7_color?.color)
+        theme['--color-background-7'] = content.background_7_color.color
+      if (content.background_8_color?.color)
+        theme['--color-background-8'] = content.background_8_color.color
+      if (content.background_9_color?.color)
+        theme['--color-background-9'] = content.background_9_color.color
+      if (content.background_10_color?.color)
+        theme['--color-background-10'] = content.background_10_color.color
+      if (content.primary_dark_color?.color)
+        theme['--color-primary-dark'] = content.primary_dark_color.color
       theme['--headline-color'] = content.colored_headlines
-        ? content.primary_highlight_color?.color
-        : content.primary_dark_color?.color
+        ? (content.primary_highlight_color?.color ?? '')
+        : (content.primary_dark_color?.color ?? '')
     }
 
     if (content.disable_rounded_corners) {
@@ -78,13 +95,7 @@ watch(route, () => {
 
 <template>
   <main>
-    <Header
-      :logo="siteConfig.content.header_logo"
-      :nav="siteConfig.content.header_nav"
-      :buttons="siteConfig.content.header_buttons"
-      :light="siteConfig.content.header_light"
-      @toggle-mobile-nav="mobileNavOpen = !mobileNavOpen"
-    />
+    <Header :site-config="siteConfig.content" @toggle-mobile-nav="mobileNavOpen = !mobileNavOpen" />
     <MobileNav :mobile-nav="siteConfig.content.header_nav" :mobile-nav-open="mobileNavOpen" />
     <div v-if="viewingSiteConfig && siteConfig.content.use_custom_colors" class="container py-12">
       <h2 class="mb-8 text-4xl font-black text-[--headline-color]">Color Preview</h2>
@@ -121,24 +132,7 @@ watch(route, () => {
       </p>
     </div>
     <slot />
-    <Footer
-      :headline="siteConfig.content.footer_headline"
-      :text-color="siteConfig.content.footer_text_color"
-      :footer-light="siteConfig.content.footer_light"
-      :decoration="siteConfig.content.footer_decoration"
-      :logo="siteConfig.content.footer_logo"
-      :about="siteConfig.content.footer_about"
-      :nav-1-headline="siteConfig.content.footer_nav_1_headline"
-      :nav-2-headline="siteConfig.content.footer_nav_2_headline"
-      :nav-3-headline="siteConfig.content.footer_nav_3_headline"
-      :nav-1="siteConfig.content.footer_nav_1"
-      :nav-2="siteConfig.content.footer_nav_2"
-      :nav-3="siteConfig.content.footer_nav_3"
-      :x="siteConfig.content.x"
-      :instagram="siteConfig.content.instagram"
-      :youtube="siteConfig.content.youtube"
-      :facebook="siteConfig.content.facebook"
-    />
+    <Footer :site-config="siteConfig.content" />
   </main>
 </template>
 

@@ -1,27 +1,30 @@
-<script setup>
-defineProps({ blok: Object, index: Number });
+<script setup lang="ts">
+import type { NewsletterFormSection } from '#storyblok'
 
-const showMessage = ref(false);
+defineProps<{ blok: NewsletterFormSection; index: number }>()
+
+const showMessage = ref(false)
 
 const submit = () => {
-  showMessage.value = true;
+  showMessage.value = true
   setTimeout(() => {
-    showMessage.value = false;
-  }, 4000);
-};
+    showMessage.value = false
+  }, 4000)
+}
 </script>
 
 <template>
-  <section
-    v-editable="blok"
-    class="page-section newsletter-form-section bg-white"
-  >
-    <div
-      class="container"
-    >
+  <section v-editable="blok" class="page-section newsletter-form-section bg-white">
+    <div class="container">
       <div class="relative overflow-hidden rounded-xl bg-primary-dark p-8 md:p-12 xl:p-24">
         <div class="relative z-10 flex flex-col items-center space-y-6 text-center lg:space-y-12">
-          <Headline v-if="blok.headline" :index="index" color="text-white" :headline="blok.headline" size="small" />
+          <Headline
+            v-if="blok.headline"
+            :index="index"
+            color="text-white"
+            :headline="blok.headline"
+            size="small"
+          />
           <div class="relative mx-auto flex flex-col items-center gap-8 md:flex-row">
             <form action="" class="flex flex-col gap-4 md:flex-row">
               <label for="email" class="sr-only">Your email</label>
@@ -32,8 +35,13 @@ const submit = () => {
                 placeholder="enjoy@storyblok.com"
                 class="rounded-lg bg-white px-6 py-4 text-primary-dark transition-all"
                 required
-              >
-              <Button v-if="blok.button.length && blok.button[0]" :button="blok.button[0]" class="focus-ring" @click.prevent="submit" />
+              />
+              <Button
+                v-if="blok.button?.length && blok.button[0]"
+                :button="blok.button[0]"
+                class="focus-ring"
+                @click.prevent="submit"
+              />
             </form>
             <Transition name="fade">
               <div

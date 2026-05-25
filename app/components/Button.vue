@@ -1,24 +1,20 @@
-<script setup>
-const props = defineProps({ button: Object, link: String })
+<script setup lang="ts">
+import type { Button } from '#storyblok'
+
+const props = defineProps<{ button: Button }>()
 
 const url = computed(() => {
-  if (props.button.link.url !== '') {
-    return ''
+  const link = props.button.link
+
+  if (link.linktype === 'story') {
+    return `/${(link.story as { full_slug?: string })?.full_slug ?? ''}`
   }
-  switch (props.button.link.linktype) {
-    case 'story':
-      return `/${props.button.link.story?.full_slug}`
-    case 'email':
-      return `mailto:${props.button.link.email}`
-    case 'url':
-    case 'asset':
-    default:
-      return props.button.link.url
-  }
+
+  return link.url ?? ''
 })
 
 const classes = computed(() => {
-  let classes = `focus-ring  font-semibold inline-flex w-full sm:w-auto items-center justify-center tracking-wider cursor-pointer transition-all duration-300 rounded-md border border-2 border-${
+  let classes = `focus-ring font-semibold inline-flex w-full sm:w-auto items-center justify-center tracking-wider cursor-pointer transition-all duration-300 rounded-md border border-2 border-${
     props.button.background_color
   }`
 

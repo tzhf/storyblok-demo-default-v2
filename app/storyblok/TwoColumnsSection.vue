@@ -1,5 +1,7 @@
-<script setup>
-const props = defineProps({ blok: Object, index: Number })
+<script setup lang="ts">
+import type { TwoColumnsSection } from '#storyblok'
+
+const props = defineProps<{ blok: TwoColumnsSection; index: number }>()
 
 const optimizedImage = computed(() => getOptimizedImage(props.blok.column_1_image, 800, 1000))
 </script>
@@ -16,8 +18,8 @@ const optimizedImage = computed(() => getOptimizedImage(props.blok.column_1_imag
             <div>
               <Headline
                 v-if="blok.column_1_headline"
-                size="small"
                 :headline="blok.column_1_headline"
+                size="small"
                 :index="index"
               />
               <div v-if="blok.column_1_text_1" class="prose flex grow">
@@ -28,7 +30,7 @@ const optimizedImage = computed(() => getOptimizedImage(props.blok.column_1_imag
               <div v-if="blok.column_1_text_2" class="prose">
                 <StoryblokRichText :doc="blok.column_1_text_2" />
               </div>
-              <div v-if="blok.column_1_button.length" class="mt-6">
+              <div v-if="blok.column_1_button?.length" class="mt-6">
                 <Button v-for="button in blok.column_1_button" :key="button._uid" :button="button" />
               </div>
             </div>
@@ -37,21 +39,26 @@ const optimizedImage = computed(() => getOptimizedImage(props.blok.column_1_imag
             <img
               v-if="blok.column_1_image?.filename"
               :src="optimizedImage"
-              :alt="blok.column_1_image?.alt"
+              :alt="blok.column_1_image?.alt || ''"
               class="max-w-sm rounded-tl-xl lg:max-w-full"
-            >
+            />
           </div>
         </div>
         <Decoration1 class="absolute bottom-0 left-0 z-0" :fill="blok.column_1_decoration_color" />
       </div>
       <div class="relative overflow-hidden rounded-xl" :class="`bg-${blok.column_2_background_color}`">
         <div class="relative z-10 flex h-full flex-col justify-between p-10">
-          <Headline v-if="blok.column_2_headline" size="small" :headline="blok.column_2_headline" />
+          <Headline
+            v-if="blok.column_2_headline"
+            :headline="blok.column_2_headline"
+            size="small"
+            :index="index"
+          />
           <div>
             <div v-if="blok.column_2_text_1" class="prose">
               <StoryblokRichText :doc="blok.column_2_text_1" />
             </div>
-            <div v-if="blok.column_2_button.length" class="mt-6">
+            <div v-if="blok.column_2_button?.length" class="mt-6">
               <Button v-for="button in blok.column_2_button" :key="button._uid" :button="button" />
             </div>
           </div>

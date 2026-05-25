@@ -62,8 +62,12 @@ export default defineNuxtConfig({
   },
 
   alias: {
+    '#storyblok-base': fileURLToPath(new URL('./.storyblok/types/storyblok', import.meta.url)),
     '#storyblok': fileURLToPath(
-      new URL('./.storyblok/types/<YOUR_SPACE_ID>/storyblok-components', import.meta.url)
+      new URL(
+        `./.storyblok/types/${process.env.STORYBLOK_SPACE_ID}/storyblok-components`,
+        import.meta.url
+      )
     ),
   },
 })

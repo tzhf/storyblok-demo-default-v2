@@ -1,15 +1,13 @@
-<script setup>
-defineProps({ blok: Object, index: Number });
+<script setup lang="ts">
+import type { LatestArticlesSection } from '#storyblok'
 
-const { slug } = useRoute().params;
-let language = 'default';
+defineProps<{ blok: LatestArticlesSection; index: number }>()
 
-if (slug) {
-  language = await getLanguage(slug);
-}
+const { slug } = useRoute().params
+const language = await getLanguage(slug ?? [])
 
-const articles = ref(null);
-const storyblokApi = useStoryblokApi();
+const articles = ref(null)
+const storyblokApi = useStoryblokApi()
 const { data } = await storyblokApi.get(`cdn/stories/`, {
   version: getVersion(),
   starts_with: 'articles',
@@ -18,16 +16,13 @@ const { data } = await storyblokApi.get(`cdn/stories/`, {
   resolve_relations: 'article-page.categories',
   is_startpage: false,
   per_page: 6,
-});
+})
 
-articles.value = data.stories;
+articles.value = data.stories
 </script>
 
 <template>
-  <section
-    v-editable="blok"
-    class="page-section latest-articles-section bg-white"
-  >
+  <section v-editable="blok" class="page-section latest-articles-section bg-white">
     <div class="container">
       <Headline v-if="blok.headline" :headline="blok.headline" :index="index" class="text-center" />
       <Lead v-if="blok.lead" class="text-center">

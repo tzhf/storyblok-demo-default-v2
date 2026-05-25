@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="indicator border-dark mr-1 flex size-6 items-center justify-center rounded-full border"
-  >
+  <div class="indicator border-dark mr-1 flex size-6 items-center justify-center rounded-full border">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"

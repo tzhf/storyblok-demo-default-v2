@@ -1,9 +1,12 @@
-<script setup>
-defineProps({ blok: Object, index: Number })
+<script setup lang="ts">
+import type { TabbedContentSection } from '#storyblok'
+import type { SbBlokData } from '@storyblok/js'
+
+defineProps<{ blok: TabbedContentSection; index: number }>()
 
 const activeTab = ref(0)
 
-const setActiveTab = (index) => {
+const setActiveTab = (index: number) => {
   activeTab.value = index
 }
 </script>
@@ -29,7 +32,7 @@ const setActiveTab = (index) => {
         </li>
       </ul>
       <section v-for="(entry, i) in blok.entries" :id="`entry-${entry._uid}`" :key="entry._uid">
-        <StoryblokComponent v-if="i === activeTab" :blok="entry" />
+        <StoryblokComponent v-if="i === activeTab" :blok="entry as SbBlokData" />
       </section>
     </div>
   </section>

@@ -1,7 +1,17 @@
-<script setup>
-const props = defineProps({ blok: Object, index: Number });
+<script setup lang="ts">
+import type { FeaturedArticlesSection, ArticlePage } from '#storyblok'
+import type { ISbStoryData } from '@storyblok/js'
 
-const gridClasses = computed(() => getGridClasses(props.blok.cols));
+const props = defineProps<{
+  blok: FeaturedArticlesSection
+  index: number
+}>()
+
+const resolvedArticles = computed(
+  () => props.blok.articles?.filter((a): a is ISbStoryData<ArticlePage> => typeof a !== 'string') ?? []
+)
+
+const gridClasses = computed(() => getGridClasses(props.blok.cols))
 </script>
 
 <template>
@@ -17,7 +27,7 @@ const gridClasses = computed(() => getGridClasses(props.blok.cols));
       </Lead>
       <div v-if="blok.articles" :class="gridClasses">
         <ArticleCardVertical
-          v-for="article in blok.articles"
+          v-for="article in resolvedArticles"
           :key="article.uuid"
           :article="article.content"
           :slug="article.full_slug"

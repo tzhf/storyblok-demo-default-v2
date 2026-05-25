@@ -1,8 +1,10 @@
-<script setup>
-defineProps({
-  mobileNav: Object,
-  mobileNavOpen: Boolean,
-});
+<script setup lang="ts">
+import type { NavItem } from '#storyblok'
+
+defineProps<{
+  mobileNav: NavItem[] | undefined
+  mobileNavOpen: boolean
+}>()
 </script>
 
 <template>
@@ -11,9 +13,7 @@ defineProps({
       v-if="mobileNavOpen"
       class="bg-opacity-/80 fixed top-0 z-99 flex h-screen w-[calc(100%-120px)] min-w-60 max-w-100 flex-col justify-center bg-white p-8 shadow-lg backdrop-blur-lg"
     >
-      <h2 class="mb-4 font-display text-2xl font-black">
-        Navigation
-      </h2>
+      <h2 class="mb-4 font-display text-2xl font-black">Navigation</h2>
       <ul class="flex flex-col space-y-4 text-lg">
         <li v-for="item in mobileNav" :key="item._uid">
           <NavItem :item="item" />
